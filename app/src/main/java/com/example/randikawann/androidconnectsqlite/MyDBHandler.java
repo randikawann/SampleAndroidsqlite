@@ -18,28 +18,36 @@ public class MyDBHandler extends SQLiteOpenHelper{
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE" + TABLE_PRODUCTS+"("+
-                COLUMN_ID+"INTEGER PRIMARY KEY AUTOINCREMENT"+
-                COLUMN_PRODUCTNAME+"TEXT"+");";
+        String query = "CREATE TABLE " + TABLE_PRODUCTS + "(" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_PRODUCTNAME + " TEXT " +
+                ");";
+        db.execSQL(query);
+
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_PRODUCTS);
         onCreate(db);
     }
     //add a new row to database
     public void addProduct(Products products){
-        ContentValues values=new ContentValues();
-        values.put(COLUMN_PRODUCTNAME,products.get_productsName());
         SQLiteDatabase db=getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(COLUMN_PRODUCTNAME,products.get_productname());
         db.insert(TABLE_PRODUCTS,null,values);
         db.close();
     }
     //delect a row in database
     public void deleteproduct(String productName){
         SQLiteDatabase db=getWritableDatabase();
-        db.execSQL( "DELETE FROM "+ TABLE_PRODUCTS+"WHERE" +COLUMN_PRODUCTNAME+"=\""+productName+"\";");
+        String query="DELETE FROM "+ TABLE_PRODUCTS + " WHERE " + COLUMN_PRODUCTNAME + "=\"" + productName +"\";" ;
+        db.execSQL(query);
     }
     //printout database as a string
     public String databaseToString(){
         String dbString = "";
-        SQLiteDatabase db=getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         String query="SELECT * FROM " + TABLE_PRODUCTS + " WHERE 1";
 
 
@@ -60,8 +68,5 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
 
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-    }
 }
