@@ -3,7 +3,7 @@ package com.example.randikawann.androidconnectsqlite;
 public class Products {
     private int _id;
     private String _productname;
-    
+
     public Products() {
     }
 
